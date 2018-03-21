@@ -13,17 +13,17 @@
     "css-loader": "0.28.10",
     "extract-text-webpack-plugin": "3.0.2",
     "jquery": "3.3.1",
-    "popper.js": "1.12.9",
     "react": "16.2.0",
     "react-router": "4.2.0",
     "react-router-dom": "4.2.2",
     "react-dom": "16.2.0",
     "react-hot-loader": "3.1.3",
     "style-loader": "0.20.2",
-    "bootstrap": "4.0.0",
     "typescript": "2.7.2",
     "webpack": "3.11.0",
     "webpack-hot-middleware": "2.21.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "react-bootstrap": "^0.32.1"
+  }
 }
