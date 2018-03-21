@@ -16,8 +16,8 @@ export class NavMenu extends React.Component<{}, {}> {
             <NavItem eventKey={1} href="/valueIncrement">
               values
             </NavItem>
-            <NavItem eventKey={2} href="#">
-              assa
+            <NavItem eventKey={2} href="/StarGame">
+              StarGame
             </NavItem>
             <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
               <MenuItem eventKey={3.1}>Action</MenuItem>

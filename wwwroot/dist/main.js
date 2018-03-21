@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "4d2e813f7a801bf39f94"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "6544fc0f6f29f40d5073"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1445,6 +1445,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Layout__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Home__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ValueIncrement__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_StarGame__ = __webpack_require__(199);
+
 
 
 
@@ -1452,7 +1454,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 const routes = __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__components_Layout__["a" /* Layout */], null,
     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Route"], { exact: true, path: '/', component: __WEBPACK_IMPORTED_MODULE_3__components_Home__["a" /* Home */] }),
-    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Route"], { exact: true, path: '/valueIncrement', component: __WEBPACK_IMPORTED_MODULE_4__components_ValueIncrement__["a" /* ValueIncrement */] }));
+    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Route"], { exact: true, path: '/valueIncrement', component: __WEBPACK_IMPORTED_MODULE_4__components_ValueIncrement__["a" /* ValueIncrement */] }),
+    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["Route"], { exact: true, path: '/starGame', component: __WEBPACK_IMPORTED_MODULE_5__components_StarGame__["a" /* StarGame */] }));
 /* harmony export (immutable) */ __webpack_exports__["routes"] = routes;
 
 
@@ -1724,7 +1727,7 @@ exports = module.exports = __webpack_require__(182)(false);
 
 
 // module
-exports.push([module.i, ".container {\r\n    margin-left:0px;\r\n    margin-right:0px;\r\n    width:100%;\r\n}\r\n", ""]);
+exports.push([module.i, ".container {\r\n    margin-left:0px;\r\n    margin-right:0px;\r\n    width:100%;\r\n}\r\n.fa-star{\r\n    margin:0.5em;\r\n    font-size:24px;\r\n}\r\n.spanClass{\r\n    display: inline-block;\r\n    margin: 0.5em;\r\n    text-align:center;\r\n    background-color: #ccc;\r\n    width:24px;\r\n    border-radius:50%;\r\n    cursor: pointer;\r\n}\r\n.selected {\r\n    background-color:#eee;\r\n    color:#ddd;\r\n    cursor: not-allowed;\r\n}\r\n.used {\r\n    background-color:#aaddaa;\r\n    color:#99bb99;\r\n    cursor: not-allowed;\r\n}", ""]);
 
 // exports
 
@@ -9396,8 +9399,7 @@ class Layout extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     render() {
         return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__NavMenu__["a" /* NavMenu */], null),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'container-fluid' },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'row' }, this.props.children)));
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null, this.props.children));
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Layout;
@@ -9427,7 +9429,7 @@ class NavMenu extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["Navbar"].Collapse, null,
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["Nav"], null,
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["NavItem"], { eventKey: 1, href: "/valueIncrement" }, "values"),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["NavItem"], { eventKey: 2, href: "#" }, "assa"),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["NavItem"], { eventKey: 2, href: "/StarGame" }, "StarGame"),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["NavDropdown"], { eventKey: 3, title: "Dropdown", id: "basic-nav-dropdown" },
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["MenuItem"], { eventKey: 3.1 }, "Action"),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["MenuItem"], { eventKey: 3.2 }, "Another action"),
@@ -9531,6 +9533,60 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 
 
  ;(function register() { /* react-hot-loader/webpack */ if (process.env.NODE_ENV !== 'production') { if (typeof __REACT_HOT_LOADER__ === 'undefined') { return; } /* eslint-disable camelcase, no-undef */ var webpackExports = typeof __webpack_exports__ !== 'undefined' ? __webpack_exports__ : module.exports; /* eslint-enable camelcase, no-undef */ if (typeof webpackExports === 'function') { __REACT_HOT_LOADER__.register(webpackExports, 'module.exports', "D:\\git\\ReactDemoApp\\ReactDemoApp\\ClientApp\\components\\ValueIncrement.tsx"); return; } /* eslint-disable no-restricted-syntax */ for (var key in webpackExports) { /* eslint-enable no-restricted-syntax */ if (!Object.prototype.hasOwnProperty.call(webpackExports, key)) { continue; } var namedExport = void 0; try { namedExport = webpackExports[key]; } catch (err) { continue; } __REACT_HOT_LOADER__.register(namedExport, key, "D:\\git\\ReactDemoApp\\ReactDemoApp\\ClientApp\\components\\ValueIncrement.tsx"); } } })();
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0), __webpack_require__(6)(module)))
+
+/***/ }),
+/* 199 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process, module) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+const Stars = (props) => {
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'col-md-5' },
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "fa fa-star" }),
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "fa fa-star" }),
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "fa fa-star" })));
+};
+const Button = (props) => {
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'col-md-2' },
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", null, "=")));
+};
+const Answer = (props) => {
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'col-md-5' }, "...asdasd"));
+};
+const Numbers = (props) => {
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "card text-center" },
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "spanClass" }, "1"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "spanClass selected" }, "2"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "spanClass used" }, "3"))));
+};
+class StarGame extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
+    render() {
+        return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h1", null, "StarGame"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Game, null));
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = StarGame;
+
+class Game extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
+    render() {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'container' },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h3", null, "Play nine"),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'row' },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Stars, null),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Button, null),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Answer, null)),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Numbers, null)));
+    }
+}
+
+
+ ;(function register() { /* react-hot-loader/webpack */ if (process.env.NODE_ENV !== 'production') { if (typeof __REACT_HOT_LOADER__ === 'undefined') { return; } /* eslint-disable camelcase, no-undef */ var webpackExports = typeof __webpack_exports__ !== 'undefined' ? __webpack_exports__ : module.exports; /* eslint-enable camelcase, no-undef */ if (typeof webpackExports === 'function') { __REACT_HOT_LOADER__.register(webpackExports, 'module.exports', "D:\\git\\ReactDemoApp\\ReactDemoApp\\ClientApp\\components\\StarGame.tsx"); return; } /* eslint-disable no-restricted-syntax */ for (var key in webpackExports) { /* eslint-enable no-restricted-syntax */ if (!Object.prototype.hasOwnProperty.call(webpackExports, key)) { continue; } var namedExport = void 0; try { namedExport = webpackExports[key]; } catch (err) { continue; } __REACT_HOT_LOADER__.register(namedExport, key, "D:\\git\\ReactDemoApp\\ReactDemoApp\\ClientApp\\components\\StarGame.tsx"); } } })();
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0), __webpack_require__(6)(module)))
 
 /***/ })
