@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 
-
 const Stars = (props) => {
-    const numberOfStars=1+Math.floor(Math.random()*9);
+    
     let stars = [];
-    for (let i=0; i<numberOfStars; i++)
+    for (let i=0; i<props.numberOfStars; i++)
     {
         stars.push(<i key={i} className="fa fa-star"></i>);
     }
@@ -25,17 +24,28 @@ const Button = (props: any) => {
 const Answer = (props: any) => {
     return (
         <div className='col-md-5'>
-            <span className="spanClass" >5</span>
+        {props.selectedNumbers.map((number,i)=>
+            <span className="spanClass" key={i}>{number}</span>
+        )}
         </div>
     );
 }
 const arrayOfNumbers = [1,2,3,4,5,6,7,8,9,10];
-const Numbers =(props)=>{
+const Numbers = (props)=>{
+    const numberClassName=(number)=> {
+        if (props.selectedNumbers.indexOf(number) >= 0){
+            return 'selected spanClass';
+        }else{
+            return 'spanClass';
+        }
+    }
     return (
         <div className="card text-center">
             <div>
                 {arrayOfNumbers.map((number, i) =>
-                    <span className="spanClass" key={i}>{number}</span>
+                    <span className={numberClassName(number)} key={i} onClick={() =>props.selectNumber(number)}>
+                        {number}
+                    </span>
                 )}
             </div>
         </div>
@@ -50,17 +60,27 @@ export class StarGame extends React.Component<RouteComponentProps<{}>, {}> {
     }
 }
 class Game extends React.Component {
+     state = {
+            selectedNumbers:[],
+            randomNumberOfStars:1+Math.floor(Math.random()*9)
+        }
+      
+    selectNumber = (clickedNumber:number)=>{
+        this.setState((prevState:any) => ({
+            selectedNumbers: prevState.selectedNumbers.concat(clickedNumber)
+        }));
+    };
     render() {
         return (
             <div className='container'>
                 <h3>Play nine</h3>
                 <div className='row'>
-                    <Stars />
+                    <Stars numberOfStars={this.state.randomNumberOfStars}/>
                     <Button />
-                    <Answer />
+                    <Answer selectedNumbers={this.state.selectedNumbers}/>
                 </div>
                 <br/>
-                <Numbers/>
+                <Numbers selectedNumbers={this.state.selectedNumbers} selectNumber={this.selectNumber}/>
             </div>
         );
     }

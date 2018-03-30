@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "c60b98a65a29630226d1"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "bfd6bd926de05d2dafa5"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -9544,9 +9544,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 
 const Stars = (props) => {
-    const numberOfStars = 1 + Math.floor(Math.random() * 9);
     let stars = [];
-    for (let i = 0; i < numberOfStars; i++) {
+    for (let i = 0; i < props.numberOfStars; i++) {
         stars.push(__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { key: i, className: "fa fa-star" }));
     }
     return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'col-md-5' }, stars));
@@ -9556,13 +9555,20 @@ const Button = (props) => {
         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", null, "=")));
 };
 const Answer = (props) => {
-    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'col-md-5' },
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "spanClass" }, "5")));
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'col-md-5' }, props.selectedNumbers.map((number, i) => __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "spanClass", key: i }, number))));
 };
 const arrayOfNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const Numbers = (props) => {
+    const numberClassName = (number) => {
+        if (props.selectedNumbers.indexOf(number) >= 0) {
+            return 'selected spanClass';
+        }
+        else {
+            return 'spanClass';
+        }
+    };
     return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "card text-center" },
-        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null, arrayOfNumbers.map((number, i) => __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "spanClass", key: i }, number)))));
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null, arrayOfNumbers.map((number, i) => __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: numberClassName(number), key: i, onClick: () => props.selectNumber(number) }, number)))));
 };
 class StarGame extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     render() {
@@ -9574,15 +9580,27 @@ class StarGame extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 /* harmony export (immutable) */ __webpack_exports__["a"] = StarGame;
 
 class Game extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
+    constructor() {
+        super(...arguments);
+        this.state = {
+            selectedNumbers: [],
+            randomNumberOfStars: 1 + Math.floor(Math.random() * 9)
+        };
+        this.selectNumber = (clickedNumber) => {
+            this.setState((prevState) => ({
+                selectedNumbers: prevState.selectedNumbers.concat(clickedNumber)
+            }));
+        };
+    }
     render() {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'container' },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h3", null, "Play nine"),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'row' },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Stars, null),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Stars, { numberOfStars: this.state.randomNumberOfStars }),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Button, null),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Answer, null)),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Answer, { selectedNumbers: this.state.selectedNumbers })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Numbers, null)));
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Numbers, { selectedNumbers: this.state.selectedNumbers, selectNumber: this.selectNumber })));
     }
 }
 
