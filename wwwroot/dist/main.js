@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "bfd6bd926de05d2dafa5"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "0f96d757aa1b7a8b8204"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -9555,7 +9555,7 @@ const Button = (props) => {
         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", null, "=")));
 };
 const Answer = (props) => {
-    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'col-md-5' }, props.selectedNumbers.map((number, i) => __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "spanClass", key: i }, number))));
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'col-md-5' }, props.selectedNumbers.map((number, i) => __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "spanClass", key: i, onClick: () => props.unSelectNumber(number) }, number))));
 };
 const arrayOfNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const Numbers = (props) => {
@@ -9591,6 +9591,11 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 selectedNumbers: prevState.selectedNumbers.concat(clickedNumber)
             }));
         };
+        this.unSelectNunber = (clickedNumber) => {
+            this.setState((prevState) => ({
+                selectedNumbers: prevState.selectedNumbers.filter(number => number !== clickedNumber)
+            }));
+        };
     }
     render() {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'container' },
@@ -9598,7 +9603,7 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'row' },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Stars, { numberOfStars: this.state.randomNumberOfStars }),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Button, null),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Answer, { selectedNumbers: this.state.selectedNumbers })),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Answer, { selectedNumbers: this.state.selectedNumbers, unSelectNumber: this.unSelectNunber })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Numbers, { selectedNumbers: this.state.selectedNumbers, selectNumber: this.selectNumber })));
     }
