@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "bb49d3aefa5d8b2c2012"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "269f8ea0987734232fcf"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1727,7 +1727,7 @@ exports = module.exports = __webpack_require__(182)(false);
 
 
 // module
-exports.push([module.i, ".container {\r\n    margin-left:0px;\r\n    margin-right:0px;\r\n    width:100%;\r\n}\r\n.fa-star{\r\n    margin:0.5em;\r\n    font-size:24px;\r\n}\r\n.spanClass{\r\n    display: inline-block;\r\n    margin: 0.5em;\r\n    text-align:center;\r\n    background-color: #ccc;\r\n    width:24px;\r\n    border-radius:50%;\r\n    cursor: pointer;\r\n}\r\n.selected {\r\n    background-color:#eee;\r\n    color:#ddd;\r\n    cursor: not-allowed;\r\n}\r\n.used {\r\n    background-color:#aaddaa;\r\n    color:#99bb99;\r\n    cursor: not-allowed;\r\n}", ""]);
+exports.push([module.i, ".container {\r\n    margin-left:0px;\r\n    margin-right:0px;\r\n    width:100%;\r\n}\r\n.fa-star{\r\n    margin:0.5em;\r\n    font-size:24px;\r\n}\r\n.spanClass{\r\n    display: inline-block;\r\n    margin: 0.5em;\r\n    text-align:center;\r\n    background-color: #ccc;\r\n    width:24px;\r\n    border-radius:50%;\r\n    cursor: pointer;\r\n}\r\n.selected {\r\n    background-color:#eee;\r\n    color:#ddd;\r\n    cursor: not-allowed;\r\n}\r\n.used {\r\n    background-color:#aaddaa;\r\n    color:#99bb99;\r\n    cursor: not-allowed;\r\n}\r\n\r\n", ""]);
 
 // exports
 
@@ -9553,11 +9553,11 @@ const Stars = (props) => {
 const Button = (props) => {
     let button;
     switch (props.answerIsCorrect) {
-        case true:
+        case 0 /* Correct */:
             button = __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn btn-success" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "fa fa-check" }));
             break;
-        case false:
+        case 1 /* InCorrect */:
             button = __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn btn-danger" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "fa fa-times" }));
             break;
@@ -9598,21 +9598,23 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         this.state = {
             selectedNumbers: [],
             randomNumberOfStars: 1 + Math.floor(Math.random() * 9),
-            answerIsCorrect: null,
+            answerIsCorrect: 2 /* NotSet */,
         };
         this.selectNumber = (clickedNumber) => {
             this.setState((prevState) => ({
+                answerIsCorrect: 2 /* NotSet */,
                 selectedNumbers: prevState.selectedNumbers.concat(clickedNumber)
             }));
         };
-        this.unSelectNunber = (clickedNumber) => {
+        this.unSelectNumber = (clickedNumber) => {
             this.setState((prevState) => ({
+                answerIsCorrect: 2 /* NotSet */,
                 selectedNumbers: prevState.selectedNumbers.filter(number => number !== clickedNumber)
             }));
         };
         this.checkAnswer = () => {
             this.setState((prevState) => ({
-                answerIsCorrect: prevState.randomNumberOfStars === prevState.selectedNumbers.reduce((acc, n) => acc + n, 0)
+                answerIsCorrect: prevState.randomNumberOfStars === prevState.selectedNumbers.reduce((acc, n) => acc + n, 0) ? 0 /* Correct */ : 1 /* InCorrect */
             }), function () {
                 //alert(this.state.randomNumberOfStars + ", " + this.state.selectedNumbers.reduce((acc,n)=> acc+n, 0) + "," + this.state.answerIsCorrect);
             });
@@ -9625,7 +9627,7 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'row' },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Stars, { numberOfStars: randomNumberOfStars }),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Button, { selectedNumbers: selectedNumbers, checkAnswer: this.checkAnswer, answerIsCorrect: this.state.answerIsCorrect }),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Answer, { selectedNumbers: selectedNumbers, unSelectNumber: this.unSelectNunber })),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Answer, { selectedNumbers: selectedNumbers, unSelectNumber: this.unSelectNumber })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Numbers, { selectedNumbers: selectedNumbers, selectNumber: this.selectNumber })));
     }

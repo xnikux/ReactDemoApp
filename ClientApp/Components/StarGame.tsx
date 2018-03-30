@@ -17,21 +17,23 @@ const Stars = (props) => {
 const Button = (props: any) => {
     let button;
     switch (props.answerIsCorrect) {
-        case true:
+        case answerValues.Correct:
             button = <button className="btn btn-success">
-                <i className="fa fa-check"></i>
-            </button>
+                        <i className="fa fa-check"></i>
+                    </button>
             break;
-        case false:
-            button =<button className="btn btn-danger">
-                <i className="fa fa-times"></i>
-            </button>
+        case answerValues.InCorrect:
+            button = <button className="btn btn-danger">
+                        <i className="fa fa-times"></i>
+                    </button>
             break;
         default:
             button = <button 
-                className="btn" 
-                onClick={props.checkAnswer}
-                disabled={props.selectedNumbers.length === 0}>=</button>
+                        className="btn" 
+                        onClick={props.checkAnswer}
+                        disabled={props.selectedNumbers.length === 0}>
+                        =
+                    </button>
             break;
     }
     return (
@@ -50,6 +52,11 @@ const Answer = (props: any) => {
     );
 }
 const arrayOfNumbers = [1,2,3,4,5,6,7,8,9,10];
+const enum answerValues{
+    Correct,
+    InCorrect,
+    NotSet
+}
 const Numbers = (props)=>{
     const numberClassName=(number)=> {
         if (props.selectedNumbers.indexOf(number) >= 0){
@@ -82,23 +89,25 @@ class Game extends React.Component {
      state = {
             selectedNumbers:[],
             randomNumberOfStars:1+Math.floor(Math.random()*9),
-            answerIsCorrect : null,
+            answerIsCorrect: answerValues.NotSet,
         }
       
     selectNumber = (clickedNumber:number)=>{
         this.setState((prevState:any) => ({
+            answerIsCorrect: answerValues.NotSet,
             selectedNumbers: prevState.selectedNumbers.concat(clickedNumber)
         }));
     };
-    unSelectNunber = (clickedNumber:number) =>{
+    unSelectNumber = (clickedNumber:number) =>{
         this.setState((prevState:any)=> ({
+            answerIsCorrect: answerValues.NotSet,
             selectedNumbers: prevState.selectedNumbers.filter(number=> number !== clickedNumber)
         }));
     }
     checkAnswer = () => {
         
         this.setState((prevState:any) => ({
-            answerIsCorrect : prevState.randomNumberOfStars === prevState.selectedNumbers.reduce((acc,n)=> acc+n, 0)
+            answerIsCorrect : prevState.randomNumberOfStars === prevState.selectedNumbers.reduce((acc,n)=> acc+n, 0) ? answerValues.Correct : answerValues.InCorrect
         }),
         function () {
             //alert(this.state.randomNumberOfStars + ", " + this.state.selectedNumbers.reduce((acc,n)=> acc+n, 0) + "," + this.state.answerIsCorrect);
@@ -113,7 +122,7 @@ class Game extends React.Component {
                 <div className='row'>
                     <Stars numberOfStars={randomNumberOfStars}/>
                     <Button selectedNumbers={selectedNumbers} checkAnswer={this.checkAnswer} answerIsCorrect={this.state.answerIsCorrect}/>
-                    <Answer selectedNumbers={selectedNumbers} unSelectNumber={this.unSelectNunber}/>
+                    <Answer selectedNumbers={selectedNumbers} unSelectNumber={this.unSelectNumber}/>
                 </div>
                 <br/>
                 <Numbers selectedNumbers={selectedNumbers} selectNumber={this.selectNumber}/>
