@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "269f8ea0987734232fcf"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "035b0a4ec0198a2059b3"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -9554,7 +9554,7 @@ const Button = (props) => {
     let button;
     switch (props.answerIsCorrect) {
         case 0 /* Correct */:
-            button = __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn btn-success" },
+            button = __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn btn-success", onClick: props.acceptAnswer },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "fa fa-check" }));
             break;
         case 1 /* InCorrect */:
@@ -9565,15 +9565,25 @@ const Button = (props) => {
             button = __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn", onClick: props.checkAnswer, disabled: props.selectedNumbers.length === 0 }, "=");
             break;
     }
-    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'col-md-2' }, button));
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'col-md-2 text-center' },
+        button,
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn btn-warning btn-sm", disabled: props.redrawCount >= 5, onClick: props.redraw },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("i", { className: "fa fa-refresh" }),
+            " ",
+            5 - props.redrawCount)));
 };
 const Answer = (props) => {
     return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'col-md-5' }, props.selectedNumbers.map((number, i) => __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "spanClass", key: i, onClick: () => props.unSelectNumber(number) }, number))));
 };
-const arrayOfNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const arrayOfNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const Numbers = (props) => {
     const numberClassName = (number) => {
-        if (props.selectedNumbers.indexOf(number) >= 0) {
+        if (props.usedNumbers.indexOf(number) >= 0) {
+            return 'used spanClass';
+        }
+        else if (props.selectedNumbers.indexOf(number) >= 0) {
             return 'selected spanClass';
         }
         else {
@@ -9599,6 +9609,8 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
             selectedNumbers: [],
             randomNumberOfStars: 1 + Math.floor(Math.random() * 9),
             answerIsCorrect: 2 /* NotSet */,
+            usedNumbers: [],
+            redrawCount: 0,
         };
         this.selectNumber = (clickedNumber) => {
             this.setState((prevState) => ({
@@ -9619,17 +9631,33 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 //alert(this.state.randomNumberOfStars + ", " + this.state.selectedNumbers.reduce((acc,n)=> acc+n, 0) + "," + this.state.answerIsCorrect);
             });
         };
+        this.acceptAnswer = () => {
+            this.setState((prevState) => ({
+                usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
+                selectedNumbers: [],
+                answerIsCorrect: 2 /* NotSet */,
+                randomNumberOfStars: 1 + Math.floor(Math.random() * 9)
+            }));
+        };
+        this.redraw = () => {
+            this.setState((prevState) => ({
+                selectedNumbers: [],
+                answerIsCorrect: 2 /* NotSet */,
+                randomNumberOfStars: 1 + Math.floor(Math.random() * 9),
+                redrawCount: prevState.redrawCount + 1
+            }));
+        };
     }
     render() {
-        const { selectedNumbers, randomNumberOfStars } = this.state;
+        const { selectedNumbers, randomNumberOfStars, answerIsCorrect, usedNumbers, redrawCount } = this.state;
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'container' },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h3", null, "Play nine"),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'row' },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Stars, { numberOfStars: randomNumberOfStars }),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Button, { selectedNumbers: selectedNumbers, checkAnswer: this.checkAnswer, answerIsCorrect: this.state.answerIsCorrect }),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Button, { selectedNumbers: selectedNumbers, checkAnswer: this.checkAnswer, answerIsCorrect: answerIsCorrect, acceptAnswer: this.acceptAnswer, redraw: this.redraw, redrawCount: redrawCount }),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Answer, { selectedNumbers: selectedNumbers, unSelectNumber: this.unSelectNumber })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Numbers, { selectedNumbers: selectedNumbers, selectNumber: this.selectNumber })));
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Numbers, { selectedNumbers: selectedNumbers, selectNumber: this.selectNumber, usedNumbers: usedNumbers })));
     }
 }
 

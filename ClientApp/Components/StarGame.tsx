@@ -18,7 +18,7 @@ const Button = (props: any) => {
     let button;
     switch (props.answerIsCorrect) {
         case answerValues.Correct:
-            button = <button className="btn btn-success">
+            button = <button className="btn btn-success" onClick={props.acceptAnswer}>
                         <i className="fa fa-check"></i>
                     </button>
             break;
@@ -37,8 +37,13 @@ const Button = (props: any) => {
             break;
     }
     return (
-        <div className='col-md-2'>
+        <div className='col-md-2 text-center'>
             {button}
+            <br/>
+            <br/>
+            <button className="btn btn-warning btn-sm" disabled={props.redrawCount>=5} onClick={props.redraw}>
+                <i className="fa fa-refresh"></i> {5-props.redrawCount}
+            </button>
         </div>
     );
 }
@@ -51,7 +56,7 @@ const Answer = (props: any) => {
         </div>
     );
 }
-const arrayOfNumbers = [1,2,3,4,5,6,7,8,9,10];
+const arrayOfNumbers = [1,2,3,4,5,6,7,8,9];
 const enum answerValues{
     Correct,
     InCorrect,
@@ -59,7 +64,10 @@ const enum answerValues{
 }
 const Numbers = (props)=>{
     const numberClassName=(number)=> {
-        if (props.selectedNumbers.indexOf(number) >= 0){
+        if (props.usedNumbers.indexOf(number)>=0){
+            return 'used spanClass';
+        }
+        else if(props.selectedNumbers.indexOf(number) >= 0){
             return 'selected spanClass';
         }else{
             return 'spanClass';
@@ -90,6 +98,8 @@ class Game extends React.Component {
             selectedNumbers:[],
             randomNumberOfStars:1+Math.floor(Math.random()*9),
             answerIsCorrect: answerValues.NotSet,
+            usedNumbers: [],
+            redrawCount:0,
         }
       
     selectNumber = (clickedNumber:number)=>{
@@ -112,20 +122,51 @@ class Game extends React.Component {
         function () {
             //alert(this.state.randomNumberOfStars + ", " + this.state.selectedNumbers.reduce((acc,n)=> acc+n, 0) + "," + this.state.answerIsCorrect);
         });
-        
+    }
+    acceptAnswer = () => {
+        this.setState((prevState:any) => ({
+           usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
+           selectedNumbers:[],
+           answerIsCorrect: answerValues.NotSet,
+           randomNumberOfStars:1+Math.floor(Math.random()*9)
+        }));
+    }
+    redraw = () =>{
+        this.setState((prevState:any) => ({
+            selectedNumbers:[],
+            answerIsCorrect: answerValues.NotSet,
+            randomNumberOfStars:1+Math.floor(Math.random()*9),
+            redrawCount:prevState.redrawCount+1
+         }));
     }
     render() {
-        const {selectedNumbers, randomNumberOfStars} = this.state;
+        const {
+            selectedNumbers, 
+            randomNumberOfStars,
+            answerIsCorrect,
+            usedNumbers,
+            redrawCount
+            } = this.state;
         return (
             <div className='container'>
                 <h3>Play nine</h3>
                 <div className='row'>
                     <Stars numberOfStars={randomNumberOfStars}/>
-                    <Button selectedNumbers={selectedNumbers} checkAnswer={this.checkAnswer} answerIsCorrect={this.state.answerIsCorrect}/>
+                    <Button 
+                        selectedNumbers={selectedNumbers} 
+                        checkAnswer={this.checkAnswer} 
+                        answerIsCorrect={answerIsCorrect}
+                        acceptAnswer={this.acceptAnswer}
+                        redraw={this.redraw}
+                        redrawCount={redrawCount}
+                        />
                     <Answer selectedNumbers={selectedNumbers} unSelectNumber={this.unSelectNumber}/>
                 </div>
                 <br/>
-                <Numbers selectedNumbers={selectedNumbers} selectNumber={this.selectNumber}/>
+                <Numbers 
+                    selectedNumbers={selectedNumbers} 
+                    selectNumber={this.selectNumber}
+                    usedNumbers={usedNumbers}/>
             </div>
         );
     }
