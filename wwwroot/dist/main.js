@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "035b0a4ec0198a2059b3"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "1bf74f78ade26c75f7df"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -9543,6 +9543,33 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 /* WEBPACK VAR INJECTION */(function(process, module) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 
+const arrayOfNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+//https://gist.github.com/samerbuna/aa1f011a6e42d6deba46
+var possibleCombinationSum = function (arr, n) {
+    if (arr.indexOf(n) >= 0) {
+        return true;
+    }
+    if (arr[0] > n) {
+        return false;
+    }
+    if (arr[arr.length - 1] > n) {
+        arr.pop();
+        return possibleCombinationSum(arr, n);
+    }
+    var listSize = arr.length, combinationsCount = (1 << listSize);
+    for (var i = 1; i < combinationsCount; i++) {
+        var combinationSum = 0;
+        for (var j = 0; j < listSize; j++) {
+            if (i & (1 << j)) {
+                combinationSum += arr[j];
+            }
+        }
+        if (n === combinationSum) {
+            return true;
+        }
+    }
+    return false;
+};
 const Stars = (props) => {
     let stars = [];
     for (let i = 0; i < props.numberOfStars; i++) {
@@ -9577,7 +9604,6 @@ const Button = (props) => {
 const Answer = (props) => {
     return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'col-md-5' }, props.selectedNumbers.map((number, i) => __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "spanClass", key: i, onClick: () => props.unSelectNumber(number) }, number))));
 };
-const arrayOfNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const Numbers = (props) => {
     const numberClassName = (number) => {
         if (props.usedNumbers.indexOf(number) >= 0) {
@@ -9593,6 +9619,11 @@ const Numbers = (props) => {
     return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "card text-center" },
         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null, arrayOfNumbers.map((number, i) => __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: numberClassName(number), key: i, onClick: () => props.selectNumber(number) }, number)))));
 };
+const DoneFrame = (props) => {
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "text-center" },
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h2", null, props.doneStatus),
+        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "btn btn-secondary", onClick: props.resetGame }, "Play Again")));
+};
 class StarGame extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     render() {
         return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null,
@@ -9605,13 +9636,8 @@ class StarGame extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 class Game extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     constructor() {
         super(...arguments);
-        this.state = {
-            selectedNumbers: [],
-            randomNumberOfStars: 1 + Math.floor(Math.random() * 9),
-            answerIsCorrect: 2 /* NotSet */,
-            usedNumbers: [],
-            redrawCount: 0,
-        };
+        this.state = Game.initialState();
+        this.resetGame = () => this.setState(Game.initialState());
         this.selectNumber = (clickedNumber) => {
             this.setState((prevState) => ({
                 answerIsCorrect: 2 /* NotSet */,
@@ -9636,20 +9662,34 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
                 selectedNumbers: [],
                 answerIsCorrect: 2 /* NotSet */,
-                randomNumberOfStars: 1 + Math.floor(Math.random() * 9)
-            }));
+                randomNumberOfStars: Game.randomNumber()
+            }), this.updateDoneStatus);
         };
         this.redraw = () => {
             this.setState((prevState) => ({
                 selectedNumbers: [],
                 answerIsCorrect: 2 /* NotSet */,
-                randomNumberOfStars: 1 + Math.floor(Math.random() * 9),
+                randomNumberOfStars: Game.randomNumber(),
                 redrawCount: prevState.redrawCount + 1
-            }));
+            }), this.updateDoneStatus);
+        };
+        this.possibleSolutions = ({ randomNumberOfStars, usedNumbers }) => {
+            const possibleNumbers = arrayOfNumbers.filter(number => usedNumbers.indexOf(number) === -1);
+            return possibleCombinationSum(possibleNumbers, randomNumberOfStars);
+        };
+        this.updateDoneStatus = () => {
+            this.setState((prevState) => {
+                if (prevState.usedNumbers.length === 9) {
+                    return { doneStatus: "Done. Nice!" };
+                }
+                if (prevState.redrawCount === 5 && !this.possibleSolutions(prevState)) {
+                    return { doneStatus: "Game Over!" };
+                }
+            });
         };
     }
     render() {
-        const { selectedNumbers, randomNumberOfStars, answerIsCorrect, usedNumbers, redrawCount } = this.state;
+        const { selectedNumbers, randomNumberOfStars, answerIsCorrect, usedNumbers, redrawCount, doneStatus } = this.state;
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'container' },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h3", null, "Play nine"),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'row' },
@@ -9657,9 +9697,20 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Button, { selectedNumbers: selectedNumbers, checkAnswer: this.checkAnswer, answerIsCorrect: answerIsCorrect, acceptAnswer: this.acceptAnswer, redraw: this.redraw, redrawCount: redrawCount }),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Answer, { selectedNumbers: selectedNumbers, unSelectNumber: this.unSelectNumber })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Numbers, { selectedNumbers: selectedNumbers, selectNumber: this.selectNumber, usedNumbers: usedNumbers })));
+            doneStatus ?
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](DoneFrame, { doneStatus: doneStatus, resetGame: this.resetGame }) :
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Numbers, { selectedNumbers: selectedNumbers, selectNumber: this.selectNumber, usedNumbers: usedNumbers })));
     }
 }
+Game.randomNumber = () => 1 + Math.floor(Math.random() * 9);
+Game.initialState = () => ({
+    selectedNumbers: [],
+    randomNumberOfStars: Game.randomNumber(),
+    answerIsCorrect: 2 /* NotSet */,
+    usedNumbers: [],
+    redrawCount: 0,
+    doneStatus: null
+});
 
 
  ;(function register() { /* react-hot-loader/webpack */ if (process.env.NODE_ENV !== 'production') { if (typeof __REACT_HOT_LOADER__ === 'undefined') { return; } /* eslint-disable camelcase, no-undef */ var webpackExports = typeof __webpack_exports__ !== 'undefined' ? __webpack_exports__ : module.exports; /* eslint-enable camelcase, no-undef */ if (typeof webpackExports === 'function') { __REACT_HOT_LOADER__.register(webpackExports, 'module.exports', "C:\\git\\ReactDemoApp\\ClientApp\\components\\StarGame.tsx"); return; } /* eslint-disable no-restricted-syntax */ for (var key in webpackExports) { /* eslint-enable no-restricted-syntax */ if (!Object.prototype.hasOwnProperty.call(webpackExports, key)) { continue; } var namedExport = void 0; try { namedExport = webpackExports[key]; } catch (err) { continue; } __REACT_HOT_LOADER__.register(namedExport, key, "C:\\git\\ReactDemoApp\\ClientApp\\components\\StarGame.tsx"); } } })();
