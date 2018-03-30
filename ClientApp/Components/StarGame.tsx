@@ -2,12 +2,16 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 
 
-const Stars = (props: any) => {
+const Stars = (props) => {
+    const numberOfStars=1+Math.floor(Math.random()*9);
+    let stars = [];
+    for (let i=0; i<numberOfStars; i++)
+    {
+        stars.push(<i key={i} className="fa fa-star"></i>);
+    }
     return (
         <div className='col-md-5'>
-            <i className="fa fa-star"></i>
-            <i className="fa fa-star"></i>
-            <i className="fa fa-star"></i>
+            {stars}
         </div>
     );
 }
@@ -21,17 +25,18 @@ const Button = (props: any) => {
 const Answer = (props: any) => {
     return (
         <div className='col-md-5'>
-            ...asdasd
+            <span className="spanClass" >5</span>
         </div>
     );
 }
+const arrayOfNumbers = [1,2,3,4,5,6,7,8,9,10];
 const Numbers =(props)=>{
     return (
         <div className="card text-center">
             <div>
-                <span className="spanClass">1</span>
-                <span className="spanClass selected">2</span>
-                <span className="spanClass used">3</span>
+                {arrayOfNumbers.map((number, i) =>
+                    <span className="spanClass" key={i}>{number}</span>
+                )}
             </div>
         </div>
     )
